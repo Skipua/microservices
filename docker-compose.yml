@@ -1,0 +1,16 @@
+version: '3.3'
+
+services:
+  config-server:
+    ports:
+        - "9000:9000"   
+    expose:
+        - 9000
+    build:
+      context: config-server
+      dockerfile: server.dockerfile 
+    networks:
+       - network1
+networks:
+  network1:
+    driver: bridge
