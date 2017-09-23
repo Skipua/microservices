@@ -11,6 +11,18 @@ services:
       dockerfile: server.dockerfile 
     networks:
        - network1
+  library-client:
+    ports:
+        - "8000:8000"
+    expose:
+        - 8000
+    build:
+      context: book
+      dockerfile: book.dockerfile
+    depends_on:
+      - "config-server"
+    networks:
+       - network1
 networks:
   network1:
     driver: bridge
