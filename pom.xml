@@ -75,6 +75,8 @@
 		<module>zuul</module>
 		<module>consul</module>
 		<module>vault</module>
-	</modules>
+        <module>delivery</module>
+        <module>hit</module>
+    </modules>
 
 </project>
