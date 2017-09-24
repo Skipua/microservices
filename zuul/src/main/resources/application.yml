@@ -6,3 +6,4 @@ zuul:
     book:
       path: /books/**
       service-id: library-client
+  ignored-services: config-service,zuul
