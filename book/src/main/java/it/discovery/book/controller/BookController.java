@@ -1,10 +1,13 @@
 package it.discovery.book.controller;
 
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixProperty;
 import it.discovery.book.client.HitClient;
 import it.discovery.book.domain.Book;
 import it.discovery.book.domain.Hit;
 import it.discovery.book.repository.BookRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
@@ -17,6 +20,7 @@ import java.util.Collections;
 
 @RestController
 @RequiredArgsConstructor
+@Slf4j
 public class BookController {
 
     private final BookRepository bookRepository;
@@ -39,6 +43,9 @@ public class BookController {
     }
 
     @GetMapping(path = "book/{id}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @HystrixCommand(fallbackMethod = "fallback", commandProperties = {
+            @HystrixProperty(name = "circuitBreaker.errorThresholdPercentage", value = "1")
+    })
     public Book findById(@PathVariable int id) {
         Book book = bookRepository.findBookById(id);
         if (book != null) {
@@ -53,7 +60,7 @@ public class BookController {
 //        return 1;
 //    }
 
-    private void addHit(Book book) {
+    public void addHit(Book book) {
         Hit hit = new Hit();
         hit.setBrowser("Chrome");
         try {
@@ -73,5 +80,10 @@ public class BookController {
 //
 //        restTemplate.exchange("http://hit", HttpMethod.POST, entity, ResponseEntity.class);
         hitClient.saveHit(hit);
+    }
+
+    public Book fallback(int id) {
+        log.error("Failed to save hit");
+        return null;
     }
 }
