@@ -1,2 +1,8 @@
 server:
-   port: 
+   port: 9700
+zuul:
+  prefix: /api
+  routes:
+    book:
+      path: /books/**
+      service-id: library-client
