@@ -5,13 +5,14 @@ import it.discovery.book.domain.Hit;
 import it.discovery.book.repository.BookRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.time.LocalDateTime;
+import java.util.Collections;
 
 @RestController
 @RequiredArgsConstructor
@@ -55,6 +56,12 @@ public class BookController {
         //hit.setViewed(LocalDateTime.now());
         hit.setApplicationName("Library client");
         hit.setObjectId(String.valueOf(book.getId()));
-        restTemplate.postForEntity("http://hit", hit, ResponseEntity.class);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON_UTF8);
+
+        HttpEntity<Hit> entity = new HttpEntity<>(hit, headers);
+
+        restTemplate.exchange("http://hit", HttpMethod.POST, entity, ResponseEntity.class);
     }
 }
