@@ -20,4 +20,9 @@ public class InMemoryHitRepository implements HitRepository{
     public void saveHit(Hit hit) {
         hits.add(hit.getObjectId(), hit);
     }
+
+    @Override
+    public int findHitCount(String id) {
+        return hits.get(id).size();
+    }
 }

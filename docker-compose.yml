@@ -24,6 +24,22 @@ services:
     depends_on:
       - "eureka-server"
       - "config-server"
+      - "hit"
+    networks:
+      - network1
+    environment:
+      - EUREKA_ADDRESS=eureka-server:8090
+  hit:
+    ports:
+      - "9500:9500"
+    expose:
+      - 9500
+    build:
+      context: hit
+      dockerfile: hit.dockerfile
+    depends_on:
+      - "eureka-server"
+      - "config-server"
     networks:
       - network1
     environment:

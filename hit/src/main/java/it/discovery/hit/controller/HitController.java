@@ -3,6 +3,7 @@ package it.discovery.hit.controller;
 import it.discovery.hit.domain.Hit;
 import it.discovery.hit.repository.HitRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -21,7 +22,12 @@ public class HitController {
         return hitRepository.findHits(id);
     }
 
-    @PostMapping
+    @GetMapping("/{id}/count")
+    public int findHitCount(String id) {
+        return hitRepository.findHitCount(id);
+    }
+
+    @PostMapping(consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public void saveHit(@RequestBody Hit hit) {
         hitRepository.saveHit(hit);
     }

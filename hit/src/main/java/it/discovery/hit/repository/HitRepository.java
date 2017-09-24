@@ -8,4 +8,6 @@ public interface HitRepository {
     List<Hit> findHits(String id);
 
     void saveHit(Hit hit);
+
+    int findHitCount(String id);
 }
