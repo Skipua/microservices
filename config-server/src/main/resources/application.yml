@@ -1,12 +1,12 @@
-#spring:
-#  cloud:
-#    config:
-#      server:
-#        git:
-#          uri: https://github.com/it-discovery/config
-#          searchPaths:
+spring:
+  cloud:
+    config:
+      server:
+        git:
+          uri: https://github.com/it-discovery/config
+          searchPaths:
 server:
   port: 9000
-spring:
-  profiles:
-    active: native
+#spring:
+#  profiles:
+#    active: native

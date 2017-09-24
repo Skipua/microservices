@@ -9,6 +9,7 @@ import it.discovery.book.repository.BookRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
@@ -21,6 +22,7 @@ import java.util.Collections;
 @RestController
 @RequiredArgsConstructor
 @Slf4j
+@RefreshScope
 public class BookController {
 
     private final BookRepository bookRepository;
