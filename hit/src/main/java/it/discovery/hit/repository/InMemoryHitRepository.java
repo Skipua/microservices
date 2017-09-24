@@ -23,6 +23,9 @@ public class InMemoryHitRepository implements HitRepository{
 
     @Override
     public int findHitCount(String id) {
+        if(!hits.containsKey(id)) {
+            return 0;
+        }
         return hits.get(id).size();
     }
 }

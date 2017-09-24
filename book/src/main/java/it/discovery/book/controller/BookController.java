@@ -1,5 +1,6 @@
 package it.discovery.book.controller;
 
+import it.discovery.book.client.HitClient;
 import it.discovery.book.domain.Book;
 import it.discovery.book.domain.Hit;
 import it.discovery.book.repository.BookRepository;
@@ -20,7 +21,9 @@ public class BookController {
 
     private final BookRepository bookRepository;
 
-    private final RestTemplate restTemplate;
+    //private final RestTemplate restTemplate;
+
+    private final HitClient hitClient;
 
     @Value("${library.name}")
     private String libraryName;
@@ -35,14 +38,20 @@ public class BookController {
         bookRepository.saveBook(book);
     }
 
-    @GetMapping("book/{id}")
+    @GetMapping(path = "book/{id}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public Book findById(@PathVariable int id) {
         Book book = bookRepository.findBookById(id);
         if (book != null) {
             addHit(book);
+           // book.setHitCount(getHitCount(book));
         }
         return book;
     }
+
+//    private int getHitCount(Book book) {
+//        ResponseEntity r = restTemplate.getForEntity("http://hit/" + book.getId() + "/count", ResponseEntity.class);
+//        return 1;
+//    }
 
     private void addHit(Book book) {
         Hit hit = new Hit();
@@ -57,11 +66,12 @@ public class BookController {
         hit.setApplicationName("Library client");
         hit.setObjectId(String.valueOf(book.getId()));
 
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON_UTF8);
-
-        HttpEntity<Hit> entity = new HttpEntity<>(hit, headers);
-
-        restTemplate.exchange("http://hit", HttpMethod.POST, entity, ResponseEntity.class);
+//        HttpHeaders headers = new HttpHeaders();
+//        headers.setContentType(MediaType.APPLICATION_JSON_UTF8);
+//
+//        HttpEntity<Hit> entity = new HttpEntity<>(hit, headers);
+//
+//        restTemplate.exchange("http://hit", HttpMethod.POST, entity, ResponseEntity.class);
+        hitClient.saveHit(hit);
     }
 }

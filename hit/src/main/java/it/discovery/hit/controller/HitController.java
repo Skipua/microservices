@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.print.attribute.standard.Media;
 import java.util.List;
 
 @RestController
@@ -22,7 +23,7 @@ public class HitController {
         return hitRepository.findHits(id);
     }
 
-    @GetMapping("/{id}/count")
+    @GetMapping(value = "/{id}/count", produces = MediaType.TEXT_PLAIN_VALUE)
     public int findHitCount(String id) {
         return hitRepository.findHitCount(id);
     }
