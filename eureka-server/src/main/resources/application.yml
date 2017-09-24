@@ -1,0 +1,26 @@
+spring:
+  profiles: peer1
+server:
+  port: 8090
+eureka:
+  instance:
+    hostname: peer1
+  client:
+    registerWithEureka: true
+    fetchRegistry: true
+    serviceUrl:
+      defaultZone: http://peer1:8090/eureka/,http://peer2:8091/eureka/
+
+---
+spring:
+  profiles: peer2
+server:
+  port: 8091
+eureka:
+  instance:
+    hostname: peer2
+  client:
+    registerWithEureka: true
+    fetchRegistry: true
+    serviceUrl:
+      defaultZone: http://peer1:8090/eureka/,http://peer2:8091/eureka/
